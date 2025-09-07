@@ -50,7 +50,7 @@ func main() {
 	suffix, _ := reader.ReadString('\n')
 	suffix = strings.TrimSpace(suffix)
 	bestCandidate = candidate{score: len(suffix) + 1}
-	threadCount := runtime.NumCPU() * 2 // т.е. 60 горутин
+	threadCount := runtime.NumCPU() * 1 // введите любое число, чем больше тем больнее компу
 	log.Printf("Использую %d потоков\n", threadCount)
 	var wg sync.WaitGroup
 	doneLog := make(chan struct{})
