@@ -12,6 +12,18 @@
 
 ## Как запустить
 
+### Если ты скачал готовый exe из репы (без Go)
+
+Просто запусти бинарник:
+
+```powershell
+.\ton-generator.exe
+```
+
+Или просто открой `ton-generator.exe` двойным кликом мыши.
+
+Это самый быстрый вариант: ничего ставить не нужно.
+
 ### Если у тебя только один файл main.go (без go.mod)
 
 ```bash
@@ -32,7 +44,7 @@ go run .
 
 ```bash
 go build -o ton-generator.exe .
-./ton-generator.exe
+.\ton-generator.exe
 ```
 
 ## Как работает выбор потоков
