@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"runtime"
 	"runtime/debug"
+	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -50,7 +51,35 @@ func main() {
 	suffix, _ := reader.ReadString('\n')
 	suffix = strings.TrimSpace(suffix)
 	bestCandidate = candidate{score: len(suffix) + 1}
-	threadCount := runtime.NumCPU() * 1 // введите любое число, чем больше тем больнее компу
+
+	availableThreads := runtime.NumCPU()
+	if osThreadsRaw := strings.TrimSpace(os.Getenv("NUMBER_OF_PROCESSORS")); osThreadsRaw != "" {
+		if osThreads, err := strconv.Atoi(osThreadsRaw); err == nil && osThreads > 0 {
+			availableThreads = osThreads
+		}
+	}
+
+	fmt.Printf("Доступно потоков на компе (из ОС): %d\n", availableThreads)
+	fmt.Printf("Сколько потоков использовать (1-%d, Enter = %d): ", availableThreads, availableThreads)
+	threadInput, _ := reader.ReadString('\n')
+	threadInput = strings.TrimSpace(threadInput)
+
+	threadCount := availableThreads
+	if threadInput != "" {
+		if parsed, err := strconv.Atoi(threadInput); err == nil {
+			switch {
+			case parsed < 1:
+				threadCount = 1
+			case parsed > availableThreads:
+				threadCount = availableThreads
+			default:
+				threadCount = parsed
+			}
+		} else {
+			log.Printf("Некорректное число потоков, использую значение по умолчанию: %d", threadCount)
+		}
+	}
+
 	log.Printf("Использую %d потоков\n", threadCount)
 	var wg sync.WaitGroup
 	doneLog := make(chan struct{})
