@@ -12,6 +12,16 @@
 
 ## Как запустить
 
+### Если у тебя только один файл main.go (без go.mod)
+
+```bash
+go mod init ton-generator
+go get github.com/xssnick/tonutils-go/ton/wallet
+go run main.go
+```
+
+После этого появятся go.mod и go.sum.
+
 ### Вариант 1: из исходников
 
 ```bash
